@@ -363,3 +363,40 @@ def rescale(x, y, scaledHeightWidth=3, scaleDirection="both"):
     y_ = y_ - mp
 
     return x_, y_
+
+
+def removeReps(T, F):
+    # Aim: remove repeated (x,y) coordinates from a function.
+
+    n = len(T)
+    newT = []
+    newF = []
+    newT.append(T[0])
+    newF.append(F[0])
+    k = 0
+    for i in range(1, n):
+        if (T[i] != newT[k]) or (F[i] != newF[k]):
+            newT.append(T[i])
+            newF.append(F[i])
+            k = k + 1
+    return newT, newF
+
+
+def reparam(x, y, npoints=300):
+    # This function reparametrizes the functions to have n points.
+    # Input: x and y coordinates of contour and the desired number of points.
+    # Output: reparametrized x and y values.
+
+    tst = np.zeros((len(x), 2))
+    tst[:, 0] = x
+    tst[:, 1] = y
+
+    p = tst
+    dp = np.diff(p, axis=0)
+    pts = np.zeros(len(dp) + 1)
+    pts[1:] = np.cumsum(np.sqrt(np.sum(dp * dp, axis=1)))
+    newpts = np.linspace(0, pts[-1], npoints)
+    newx = np.interp(newpts, pts, p[:, 0])
+    newy = np.interp(newpts, pts, p[:, 1])
+
+    return newx, newy
