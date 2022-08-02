@@ -316,7 +316,7 @@ def align(sample, open_closed="C", PC=3, scaleCurve=False, returnDF=1):
 def formatData(dataFrame, varName="id", xName="x", yName="y"):
     # Pandas dataframe should have a column called "Name", "X","Y"
 
-    names = np.unique(dataFrame[varName])
+    names = pd.unique(dataFrame[varName])
 
     cont_length = len(dataFrame[dataFrame[varName] == names[0]][xName])
     total_cont = len(names)
